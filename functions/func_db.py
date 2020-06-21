@@ -6,6 +6,7 @@ from validator_collection import validators, checkers
 # ПУТЬ К БАЗЕ ДАННЫХ
 path_db = "db.sqlite"
 
+
 # подключение к базе
 def connect_db(file_db):
     try:
@@ -15,6 +16,7 @@ def connect_db(file_db):
     except Exception as ex:
         print(str(ex))
 
+
 # закрываем подключение к базе
 def close_db(conn):
     try:
@@ -23,7 +25,8 @@ def close_db(conn):
     except Exception as ex:
         print(str(ex))
 
-def select_all_id():
+
+def select_all_id():  # выбираем все id пользователей
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -35,7 +38,8 @@ def select_all_id():
 
     return ids
 
-def select_all_users():
+
+def select_all_users():  # выбираем всех пользователей
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -45,9 +49,10 @@ def select_all_users():
     users = cursor.fetchall()
     close_db(conn)
 
-    return users    
+    return users
 
-def select_categories(user_id):
+
+def select_categories(user_id):  # выбираем категории, выбранные пользователем
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -57,9 +62,10 @@ def select_categories(user_id):
 
     categories = cursor.fetchall()
     close_db(conn)
-    return categories    
+    return categories
 
-def select_cities():
+
+def select_cities():  # выбираем все города
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -73,9 +79,10 @@ def select_cities():
     for city_temp in cities_temp:
         cities.append(city_temp[0])
 
-    return cities   
+    return cities
 
-def select_groups(user_id):
+
+def select_groups(user_id):  # выбираем сообщества пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -85,9 +92,10 @@ def select_groups(user_id):
 
     groups = cursor.fetchall()
     close_db(conn)
-    return groups    
+    return groups
 
-def select_status(user_id):
+
+def select_status(user_id):  # узнаем статус пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -98,9 +106,10 @@ def select_status(user_id):
     status = cursor.fetchall()
     close_db(conn)
 
-    return status  
+    return status
 
-def select_city(user_id):
+
+def select_city(user_id):  # выбираем город пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -111,9 +120,10 @@ def select_city(user_id):
     status = cursor.fetchall()
     close_db(conn)
 
-    return status  
+    return status
 
-def select_category(category):
+
+def select_category(category):  # выбираем продукты по категории
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -128,9 +138,10 @@ def select_category(category):
     for food_temp in foods_temp:
         foods.append(food_temp[0])
 
-    return foods     
+    return foods
 
-def insert_user(user_id, city, categories, groups, status):
+
+def insert_user(user_id, city, categories, groups, status):  # добавляем пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -141,7 +152,7 @@ def insert_user(user_id, city, categories, groups, status):
     close_db(conn)
 
 
-def edit_category(user_id, category):
+def edit_category(user_id, category):  # вводим категорию
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -158,12 +169,13 @@ def edit_category(user_id, category):
     WHERE id = '{1}'""".format(categories, user_id)
     cursor.execute(query)
     close_db(conn)
-    
+
     return "Категория " + category + " добавлена!"
 
 
-def edit_group(user_id, group):
-    if group[group.rfind("/")+1:group.rfind("/")+5] == "club" and group[group.rfind("/")+6:group.rfind("/")+16].isdigit():
+def edit_group(user_id, group):  # вводим сообщество
+    if group[group.rfind("/") + 1:group.rfind("/") + 5] == "club" and group[group.rfind("/") + 6:group.rfind(
+            "/") + 16].isdigit():
         return "Такой тип ссылок не поддерживается."
     if checkers.is_url(group) == False:
         return "Данная ссылка недействительная."
@@ -175,14 +187,15 @@ def edit_group(user_id, group):
         groups += group_temp[0]
     groups += group + ", "
     groups = groups[0:-1]
-    
+
     query = """UPDATE users SET groups = '{0}'
     WHERE id = '{1}'""".format(groups, user_id)
     cursor.execute(query)
     close_db(conn)
     return "Сообщество " + group + " успешно добавлено!\n\n" + "Когда Вы добавите все необходимые ссылки, то нажмите на кнопку \"Принять\"."
 
-def edit_status(user_id, status):
+
+def edit_status(user_id, status):  # вводим статус пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -191,7 +204,8 @@ def edit_status(user_id, status):
     cursor.execute(query)
     close_db(conn)
 
-def edit_city(user_id, city):
+
+def edit_city(user_id, city):  # вводим город пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 
@@ -201,7 +215,7 @@ def edit_city(user_id, city):
     close_db(conn)
 
 
-def del_user(user_id):
+def del_user(user_id):  # удаляем пользователя
     conn = connect_db(path_db)
     cursor = conn.cursor()
 

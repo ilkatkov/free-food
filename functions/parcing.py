@@ -4,12 +4,13 @@ import pymorphy2
 import time
 from . import func_db
 
-
 exceptionss = [",", ".", "!", "?", ":", "-", "+", "=", ")"]
 
 
-def _Parcing(domain, new_time):
-    token = "1310b4b31310b4b31310b4b3591362059b113101310b4b34dfda7ad3dd06b226e378da4"
+### PARSING ###
+
+def _Parcing(domain, new_time):  # Функция получения всех данных с группы фудшеринга
+    token = "1310b4b31310b4b31310b4b3591362059b113101310b4b34dfda7ad3dd06b226e378da4"  # токен api vk
     version = 5.92
     all_post = []
 
@@ -23,16 +24,20 @@ def _Parcing(domain, new_time):
     data = response.json()['response']['items']
     data_of_scoping = datetime.datetime.now().strftime('%Y-%m-%d')
 
-    for i in range(len(data)):
-        if datetime.datetime.fromtimestamp(data[i].get('date')).strftime(
+    for i in range(len(data)):  # отсеивание старых постов группы
+        if datetime.datetime.fromtimestamp(data[i].get('date')).strftime(  # проверка "свежести" по сегодняшнему дню
                 '%Y-%m-%d') == data_of_scoping and data[i].get('marked_as_ads') == 0:
-            if datetime.datetime.fromtimestamp(data[i].get('date')).strftime("%H:%M") >= new_time:
+            if datetime.datetime.fromtimestamp(data[i].get('date')).strftime(
+                    "%H:%M") >= new_time:  # проверка по времени
                 all_post.append(data[i])
 
     return all_post
 
 
-def _Food(data, users_categories, cities):
+### FOOD ###
+
+def _Food(data, users_categories,
+          cities):  # функция парсинга текста поста группы на наличие той или иной категории еды пользователя
     morph = pymorphy2.MorphAnalyzer()
     categories = {
         "Овощи": func_db.select_category("Овощи"),
@@ -47,18 +52,19 @@ def _Food(data, users_categories, cities):
         category = categories[wanted_food]
         data_with_request[wanted_food] = []
         data_with_request["Город"] = []
-        for i in data:
+        for i in data:  # Парсинг постов
             text = i.get('text').split()
             try:
-                for j in text:
+                for j in text:  # Парсинг текста поста
                     if j[-1] in exceptionss:
                         j = j[:-1]
 
-                    if morph.parse(j.rstrip().lower())[0].normal_form in category:
+                    if morph.parse(j.rstrip().lower())[
+                        0].normal_form in category:  # проверка на сходимость каждого слова с библиотекой категорий
                         data_with_request[wanted_food].append(
                             "https://vk.com/wall-" + str(i.get('owner_id'))[1:] + "_" + str(i.get('id')))
 
-                        for h in text:
+                        for h in text:  # проверка на сходимость каждого слова с библиотекой городов
                             if h[-1] in exceptionss:
                                 h = h[:-1]
                             if morph.parse(h.rstrip().lower())[0].normal_form in cities:
