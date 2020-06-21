@@ -26,7 +26,7 @@
 - requests
 - re
 - sqlite3
-- pymorphy3
+- pymorphy2
 - datetime
 - os
 - json
