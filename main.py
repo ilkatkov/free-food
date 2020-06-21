@@ -11,7 +11,7 @@ from functions import parcing
 admin = 142446929  # id админа в ВК
 
 # ---SETTINGS VK---#
-token = "ba8f045b41f957fcaf39a337bcfb9804eebec556b658451cf6424c62996a076b66808dcaa9ff712766e27"  # api-key
+token = "api_key_group"  # api-key
 vk = vk_api.VkApi(token=token)
 vk._auth_token()
 # ---SETTINGS VK---#
