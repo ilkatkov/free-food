@@ -10,7 +10,7 @@ exceptionss = [",", ".", "!", "?", ":", "-", "+", "=", ")"]
 ### PARSING ###
 
 def _Parcing(domain, new_time):  # Функция получения всех данных с группы фудшеринга
-    token = "1310b4b31310b4b31310b4b3591362059b113101310b4b34dfda7ad3dd06b226e378da4"  # токен api vk
+    token = "token_vk"  # токен api vk
     version = 5.92
     all_post = []
 
