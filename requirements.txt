@@ -3,6 +3,6 @@ lazy-object-proxy==1.4.3
 pymorphy2==0.8
 pymorphy2-dicts==2.4.393442.3710985
 pyrsistent==0.16.0
-requests==2.23.0
+requests==2.31.0
 validator-collection==1.4.2
 vk-api==11.8.0
